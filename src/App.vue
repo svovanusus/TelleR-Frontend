@@ -1,32 +1,34 @@
 <template>
-  <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
-    <router-view/>
-  </div>
+  <v-app id="teller">
+    <main-navbar />
+
+    <mobile-navbar />
+    <search-bar />
+
+    <v-content>
+      <router-view />
+    </v-content>
+
+    <main-footer />
+  </v-app>
 </template>
 
-<style lang="scss">
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
+<script lang="ts">
+import { Vue, Component } from 'vue-property-decorator';
 
-#nav {
-  padding: 30px;
+import MainNavbar from '@/layouts/MainNavbar.vue';
+import MobileNavbar from '@/layouts/MobileNavbar.vue';
+import SearchBar from '@/layouts/SearchBar.vue';
+import MainFooter from '@/layouts/MainFooter.vue';
 
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-
-    &.router-link-exact-active {
-      color: #42b983;
-    }
-  }
-}
-</style>
+@Component({
+  name: 'app',
+  components: {
+    MainNavbar,
+    MobileNavbar,
+    SearchBar,
+    MainFooter,
+  },
+})
+export default class App extends Vue {}
+</script>
