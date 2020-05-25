@@ -22,6 +22,7 @@
           v-for="(item, index) in navigationItems"
           :key="`mobile-navigation-item-${ index }`"
           :to="item.linkUrl"
+          link
         >
           <v-list-item-icon>
             <v-icon v-text="item.icon"></v-icon>

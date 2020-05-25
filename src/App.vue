@@ -3,7 +3,6 @@
     <main-navbar />
 
     <mobile-navbar />
-    <search-bar />
 
     <v-content>
       <router-view />
@@ -18,7 +17,6 @@ import { Vue, Component } from 'vue-property-decorator';
 
 import MainNavbar from '@/layouts/MainNavbar.vue';
 import MobileNavbar from '@/layouts/MobileNavbar.vue';
-import SearchBar from '@/layouts/SearchBar.vue';
 import MainFooter from '@/layouts/MainFooter.vue';
 
 @Component({
@@ -26,7 +24,6 @@ import MainFooter from '@/layouts/MainFooter.vue';
   components: {
     MainNavbar,
     MobileNavbar,
-    SearchBar,
     MainFooter,
   },
 })

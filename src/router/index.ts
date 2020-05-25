@@ -1,6 +1,8 @@
 import Vue from 'vue';
 import VueRouter, { RouteConfig } from 'vue-router';
 
+import store, { Types as StoreRootTypes } from '@/store';
+
 Vue.use(VueRouter);
 
 const routes: RouteConfig[] = [
@@ -8,27 +10,6 @@ const routes: RouteConfig[] = [
     path: '/',
     name: 'index',
     component: () => import('@/views/Index.vue'),
-  },
-  {
-    path: '/login',
-    name: 'auth',
-    component: () => import('@/views/Login.vue'),
-  },
-  {
-    path: '/blog',
-    name: 'blog-mockup',
-    component: () => import('@/views/BlogMockup.vue'),
-  },
-  {
-    path: '/post',
-    name: 'post-mockup',
-    component: () => import('@/views/PostMockup.vue'),
-  },
-  {
-    path: '/blogs/:id',
-    name: 'blog-info',
-    component: () => import('@/views/BlogInfo.vue'),
-    props: true,
   },
   {
     path: '/@:blogName',
@@ -45,6 +26,12 @@ const routes: RouteConfig[] = [
         name: 'blog-about',
         component: () => import('@/views/blog/About.vue'),
       },
+      {
+        path: 'post/:pid',
+        name: 'post',
+        component: () => import('@/views/blog/Post.vue'),
+        props: true,
+      },
     ],
     props: true,
   },
@@ -54,6 +41,14 @@ const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
   routes,
+});
+
+router.beforeEach(async (to, from, next) => {
+  if (to.params.blogName) {
+    await store.dispatch(StoreRootTypes.actions.GET_BLOG_INFO, to.params.blogName);
+  } else store.commit(StoreRootTypes.mutations.CLEAR_BLOG_INFO);
+
+  next();
 });
 
 export default router;

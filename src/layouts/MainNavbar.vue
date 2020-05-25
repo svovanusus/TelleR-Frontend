@@ -6,30 +6,28 @@
     elevate-on-scroll
   >
     <v-app-bar-nav-icon @click.stop="mobileNavOpen" class="hidden-sm-and-up" />
-    <v-toolbar-title>TelleR</v-toolbar-title>
+    <v-toolbar-title class="mr-6">{{ blogTitle }}</v-toolbar-title>
+    <template v-if="isNavigationShow">
+      <v-btn
+        v-for="(item, index) in navigationItems"
+        :key="`main-navigation-item-${ index }`"
+        text
+        large
+        :to="item.linkUrl"
+        v-text="item.title"
+        class="ml-2 hidden-xs-only"
+      ></v-btn>
+    </template>
     <v-spacer />
-    <v-btn
-      v-for="(item, index) in navigationItems"
-      :key="`main-navigation-item-${ index }`"
-      text
-      large
-      :to="item.linkUrl"
-      v-text="item.title"
-      class="ml-2 hidden-xs-only"
-    ></v-btn>
-    <v-btn
-      icon
-      class="ml-4"
-      @click="searchOpen"
-    >
-      <v-icon>mdi-magnify</v-icon>
+    <v-btn dark link href="https://admin.teller.website" target="_blank" elevation="0" class="ml-2">
+      Admin Panel
     </v-btn>
   </v-app-bar>
 </template>
 
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
-import { RootState } from '@/store';
+import { RootState, Types as RootTypes } from '@/store';
 
 import NavigationItem from '@/entities/NavigationItem';
 
@@ -40,12 +38,16 @@ import NavigationItem from '@/entities/NavigationItem';
 export default class MainNavbar extends Vue {
   readonly storeState: RootState = this.$store.state;
 
-  get navigationItems(): NavigationItem[] {
-    return this.storeState.NavigationItems;
+  get isNavigationShow():boolean {
+    return typeof this.storeState.CurrentBlog !== 'undefined';
   }
 
-  searchOpen() {
-    this.storeState.SearchOpen = true;
+  get blogTitle(): string {
+    return this.storeState.CurrentBlog ? this.storeState.CurrentBlog.title : 'TelleR';
+  }
+
+  get navigationItems(): NavigationItem[] {
+    return this.$store.getters[RootTypes.getters.NAVIGATION_ITEMS];
   }
 
   mobileNavOpen() {

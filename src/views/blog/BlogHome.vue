@@ -1,60 +1,58 @@
 <template>
-  <div class="blog-page">
-    <h1>{{ title }}</h1>
-    <div class="blog-info">
-      <p>Author: {{ author }}</p>
-    </div>
-    <div class="post-container">
-      <div class="post" v-for="post in posts" :key="post.id">
-        <h3>{{ post.title }}</h3>
-        <p>{{ post.description }}</p>
-      </div>
-    </div>
-  </div>
+  <v-container class="blog-page">
+    <v-row>
+      <v-col><h1>Posts</h1></v-col>
+    </v-row>
+    <v-row>
+      <template v-if="posts.length">
+        <v-col cols="4" v-for="post in posts" :key="`post-${post.id}`">
+          <v-card>
+            <v-card-title>{{ post.title }}</v-card-title>
+            <v-card-text>{{ post.description }}</v-card-text>
+            <v-card-actions>
+              <v-spacer />
+              <v-btn link elevation="0" color="primary" text :to="`/@${blogName}/post/${post.id}`">
+                Read more
+              </v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-col>
+      </template>
+      <p v-else>This blog not contains posts yet.</p>
+    </v-row>
+  </v-container>
 </template>
 
 <script lang="ts">
-import { Vue, Component, Prop } from 'vue-property-decorator';
+import { Vue, Component } from 'vue-property-decorator';
 import BlogService from '@/services/api/blog-service';
 import PostService from '@/services/api/post-service';
-
-import BannerPageSection from '@/components/BannerPageSection.vue';
+import PostResponseDto from '@/entities/dto/response/PostResponseDto';
+import { RootState } from '@/store';
 
 @Component({
   name: 'blog-home-view',
-  components: {
-    BannerPageSection,
-  },
+  components: {},
 })
 export default class BlogHomeView extends Vue {
-  @Prop() readonly blogName!: string;
+  rootState: RootState = this.$store.state;
 
   title: string = '';
 
   author: string = '';
 
-  posts: {
-    id: number,
-    title: string,
-    description: string,
-    content: string,
-    author: {
-      id: number,
-      fullname: string,
-    },
-    createDate: Date,
-  }[] = [];
+  posts: PostResponseDto[] = [];
+
+  get blogName(): string {
+    return this.rootState.CurrentBlogName;
+  }
 
   mounted() {
-    BlogService.getByName(this.blogName)
+    PostService.getForBlog(this.rootState.CurrentBlog ? this.rootState.CurrentBlog.id : 0)
       .then((response) => {
-        this.title = response.data.title;
-        this.author = response.data.author.fullname;
-
-        PostService.getForBlog(Number(response.data.id))
-          .then((postsResponse) => {
-            this.posts = postsResponse.data;
-          });
+        if (response && response.data) {
+          this.posts = response.data;
+        }
       });
   }
 }
