@@ -8,6 +8,7 @@ import BlogService from '@/services/api/blog-service';
 Vue.use(Vuex);
 
 export interface RootState {
+  IsLoading: boolean,
   MobileNavOpen: boolean,
   NavigationItems: NavigationItem[],
   CurrentBlogName: string,
@@ -32,6 +33,7 @@ export const Modules = { };
 
 export default new Vuex.Store<RootState>({
   state: {
+    IsLoading: true,
     CurrentBlogName: '',
     CurrentBlog: null,
     MobileNavOpen: false,

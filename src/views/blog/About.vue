@@ -2,12 +2,23 @@
   <v-container>
     <v-row class="ablot">
       <v-col>
-        <h1><v-icon>mdi-console-line</v-icon> {{ title }}</h1>
-        <h3>Author: {{ author.fullName }}</h3>
-        <div class="description" v-if="description && description.length">
-          <h3>Description</h3>
-          <p v-html="description"></p>
-        </div>
+        <v-row>
+          <v-col cols="2" lg="1">
+            <v-responsive aspect-ratio="1">
+              <v-img class="rounded" :src="author.avatar" />
+            </v-responsive>
+          </v-col>
+          <v-col>
+            <h1><v-icon>mdi-console-line</v-icon> {{ title }}</h1>
+            <h3>Author: {{ author.fullName }}</h3>
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col v-if="description && description.length">
+            <h3>Description</h3>
+            <p v-html="description"></p>
+          </v-col>
+        </v-row>
       </v-col>
     </v-row>
   </v-container>
@@ -46,6 +57,7 @@ export default class ComponentClass extends Vue {
           this.title = response.data.title;
           this.description = response.data.description.replace(/\n/gm, '<br>');
         }
+        this.$store.state.IsLoading = false;
       });
   }
 }

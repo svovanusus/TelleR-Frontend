@@ -7,7 +7,7 @@
     </v-row>
     <v-row>
       <v-col cols="1">
-        <v-responsive aspect-ratio="1/1">
+        <v-responsive aspect-ratio="1">
           <v-img class="rounded" :src="avatar" />
         </v-responsive>
       </v-col>
@@ -68,6 +68,7 @@ export default class Post extends Vue {
   }
 
   update() {
+    this.$store.state.IsLoading = true;
     PostService.getById(this.postId).then((response) => {
       if (response && response.data) {
         this.title = response.data.title;
@@ -79,6 +80,7 @@ export default class Post extends Vue {
         this.title = '';
         this.content = '';
       }
+      this.$store.state.IsLoading = false;
     });
   }
 

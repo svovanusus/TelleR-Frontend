@@ -44,6 +44,8 @@ const router = new VueRouter({
 });
 
 router.beforeEach(async (to, from, next) => {
+  store.state.IsLoading = true;
+
   if (to.params.blogName) {
     await store.dispatch(StoreRootTypes.actions.GET_BLOG_INFO, to.params.blogName);
   } else store.commit(StoreRootTypes.mutations.CLEAR_BLOG_INFO);

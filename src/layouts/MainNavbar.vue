@@ -47,7 +47,9 @@ export default class MainNavbar extends Vue {
   }
 
   get navigationItems(): NavigationItem[] {
-    return this.$store.getters[RootTypes.getters.NAVIGATION_ITEMS];
+    return this.storeState.CurrentBlog
+      ? this.$store.getters[RootTypes.getters.NAVIGATION_ITEMS]
+      : [];
   }
 
   mobileNavOpen() {

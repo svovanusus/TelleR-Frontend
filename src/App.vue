@@ -9,6 +9,10 @@
     </v-content>
 
     <main-footer />
+
+    <v-overlay :value="isLoading">
+      <v-progress-circular indeterminate size="64"></v-progress-circular>
+    </v-overlay>
   </v-app>
 </template>
 
@@ -27,5 +31,9 @@ import MainFooter from '@/layouts/MainFooter.vue';
     MainFooter,
   },
 })
-export default class App extends Vue {}
+export default class App extends Vue {
+  get isLoading(): boolean {
+    return this.$store.state.IsLoading;
+  }
+}
 </script>

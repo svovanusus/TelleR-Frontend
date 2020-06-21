@@ -5,7 +5,7 @@
     </v-row>
     <v-row>
       <template v-if="posts.length">
-        <v-col cols="4" v-for="post in posts" :key="`post-${post.id}`">
+        <v-col cols="12" sm="6" lg="4" xl="3"  v-for="post in posts" :key="`post-${post.id}`">
           <v-card>
             <v-card-title>{{ post.title }}</v-card-title>
             <v-card-text>{{ post.description }}</v-card-text>
@@ -53,6 +53,7 @@ export default class BlogHomeView extends Vue {
         if (response && response.data) {
           this.posts = response.data;
         }
+        this.$store.state.IsLoading = false;
       });
   }
 }

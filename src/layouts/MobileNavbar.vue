@@ -5,7 +5,7 @@
     temporary
   >
     <v-toolbar elevation="1" >
-      <v-toolbar-title>Blog name</v-toolbar-title>
+      <v-toolbar-title>{{ blogName }}</v-toolbar-title>
       <v-spacer />
       <v-btn
         icon
@@ -38,7 +38,7 @@
 
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
-import { RootState } from '@/store';
+import { RootState, Types as RootTypes } from '@/store';
 
 import NavigationItem from '@/entities/NavigationItem';
 
@@ -49,8 +49,16 @@ import NavigationItem from '@/entities/NavigationItem';
 export default class MobileNavbar extends Vue {
   storeState: RootState = this.$store.state;
 
+  get blogName(): string {
+    return this.storeState.CurrentBlog
+      ? this.storeState.CurrentBlog.title
+      : '';
+  }
+
   get navigationItems(): NavigationItem[] {
-    return this.storeState.NavigationItems;
+    return this.storeState.CurrentBlog
+      ? this.$store.getters[RootTypes.getters.NAVIGATION_ITEMS]
+      : [];
   }
 
   get isOpen(): boolean {
