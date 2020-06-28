@@ -1,31 +1,30 @@
 import { PluginObject } from 'vue';
 import Axios from 'axios';
+import store, { ErrorType } from '@/store';
 
 const axiosInterceptors: PluginObject<unknown> = {
   install(Vue) {
     Axios.interceptors.response.use(val => val, (err) => {
       if (!err.response) {
-        // console.log('UNKNOWN ERROR!');
+        store.state.ErrorType = ErrorType.ERROR_UNKNOWN;
         return;
       }
 
       switch (err.response.status) {
-        case 400:
-          // console.log('ERROR - 400');
-          break;
         case 401:
-          // console.log('ERROR - 401');
-          break;
         case 403:
-          // console.log('ERROR - 403');
-          break;
         case 404:
-          // console.log('ERROR - 404');
+          store.state.ErrorType = ErrorType.ERROR_404;
           break;
+        case 400:
         case 500:
-          // console.log('ERROR - 500');
+        case 501:
+        case 502:
+        case 503:
+          store.state.ErrorType = ErrorType.ERROR_500;
           break;
         default:
+          store.state.ErrorType = ErrorType.ERROR_UNKNOWN;
           break;
       }
     });

@@ -10,7 +10,7 @@
               For this you need only signup in platform.
             </h3>
             <div class="text-center mt-4">
-              <v-btn dark link href="https://admin.teller.website" target="_blank">Sign-up now</v-btn>
+              <v-btn dark link href="https://admin.teller.website/signup" target="_blank">Sign-up now</v-btn>
             </div>
           </v-col>
         </v-row>
@@ -73,7 +73,7 @@
           <v-col>
             <h1 class="text-center">Start your first blog.</h1>
             <div class="text-center mt-4">
-              <v-btn dark link href="https://admin.teller.website" target="_blank">Sign-up now</v-btn>
+              <v-btn dark link href="https://admin.teller.website/signup" target="_blank">Sign-up now</v-btn>
             </div>
           </v-col>
         </v-row>

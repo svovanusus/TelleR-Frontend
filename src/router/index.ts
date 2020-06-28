@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import VueRouter, { RouteConfig } from 'vue-router';
 
-import store, { Types as StoreRootTypes } from '@/store';
+import store, { Types as StoreRootTypes, ErrorType } from '@/store';
 
 Vue.use(VueRouter);
 
@@ -35,6 +35,11 @@ const routes: RouteConfig[] = [
     ],
     props: true,
   },
+  {
+    path: '/*',
+    name: 'unknown-page',
+    component: () => import('@/views/404.vue'),
+  },
 ];
 
 const router = new VueRouter({
@@ -44,6 +49,7 @@ const router = new VueRouter({
 });
 
 router.beforeEach(async (to, from, next) => {
+  store.state.ErrorType = ErrorType.NONE;
   store.state.IsLoading = true;
 
   if (to.params.blogName) {

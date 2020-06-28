@@ -7,8 +7,16 @@ import BlogService from '@/services/api/blog-service';
 
 Vue.use(Vuex);
 
+export enum ErrorType {
+  NONE,
+  ERROR_404,
+  ERROR_500,
+  ERROR_UNKNOWN,
+}
+
 export interface RootState {
   IsLoading: boolean,
+  ErrorType: ErrorType,
   MobileNavOpen: boolean,
   NavigationItems: NavigationItem[],
   CurrentBlogName: string,
@@ -34,6 +42,7 @@ export const Modules = { };
 export default new Vuex.Store<RootState>({
   state: {
     IsLoading: true,
+    ErrorType: ErrorType.NONE,
     CurrentBlogName: '',
     CurrentBlog: null,
     MobileNavOpen: false,
